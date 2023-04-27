@@ -15,14 +15,17 @@
 
 # Script for training on the Blender dataset.
 
-SCENE=lego
+SCENE=${1-lego}
 EXPERIMENT=debug
-TRAIN_DIR=/Users/barron/tmp/nerf_results/$EXPERIMENT/$SCENE
-DATA_DIR=/Users/barron/data/nerf_synthetic/$SCENE
+TRAIN_DIR=~/mipnerf/results/$EXPERIMENT/$SCENE
+mkdir -p $TRAIN_DIR
+# DATA_DIR=/home/grendelyang/mipnerf/data/multiscale/$SCENE
+DATA_DIR=/home/grendelyang/mipnerf/data/nerf_synthetic/$SCENE
 
 rm $TRAIN_DIR/*
 python -m train \
   --data_dir=$DATA_DIR \
   --train_dir=$TRAIN_DIR \
   --gin_file=configs/blender.gin \
-  --logtostderr
+  --logtostderr \
+  --gin_param="Config.batch_size=1024"
